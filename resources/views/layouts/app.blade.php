@@ -85,6 +85,25 @@
             position: relative;
             display: inline-block;
         }
+        .project-selection-page {
+            min-height: calc(100vh - 56px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .project-selection-card {
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 15px;
+        }
+        .project-selection-icon {
+            font-size: 4rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
     </style>
     @vite(['resources/js/app.js'])
 </head>
@@ -98,10 +117,12 @@
             </a>
 
             @auth
-            <!-- Mobile Toggle Button -->
+            <!-- Mobile Toggle Button - Only show when project is selected -->
+            @if(isset($currentProject) && $currentProject)
             <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target=".sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            @endif
 
             <!-- Project Selector -->
             <div class="navbar-nav me-auto">
@@ -172,160 +193,222 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            @auth
-            <nav class="col-lg-2 d-none d-lg-block bg-light sidebar" style="min-height: calc(100vh - 56px);">
-                <div class="position-sticky pt-3">
-                    <!-- Navigation Menu -->
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                                <i class="bi bi-house me-2"></i>
-                                Панель управления
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
-                                <i class="bi bi-folder me-2"></i>
-                                Проекты
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-kanban me-2"></i>
-                                Задачи
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-people me-2"></i>
-                                Команда
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-calendar me-2"></i>
-                                Календарь
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-graph-up me-2"></i>
-                                Отчеты
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-file-earmark-text me-2"></i>
-                                Документы
-                            </a>
-                        </li>
-                    </ul>
+    @auth
+        @if(isset($currentProject) && $currentProject)
+            <!-- Project is selected - Show sidebar and main content -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <nav class="col-lg-2 d-none d-lg-block bg-light sidebar" style="min-height: calc(100vh - 56px);">
+                        <div class="position-sticky pt-3">
+                            <!-- Navigation Menu -->
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                                        <i class="bi bi-house me-2"></i>
+                                        Панель управления
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
+                                        <i class="bi bi-folder me-2"></i>
+                                        Проекты
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-kanban me-2"></i>
+                                        Задачи
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-people me-2"></i>
+                                        Команда
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-calendar me-2"></i>
+                                        Календарь
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-graph-up me-2"></i>
+                                        Отчеты
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-file-earmark-text me-2"></i>
+                                        Документы
+                                    </a>
+                                </li>
+                            </ul>
 
-                    <!-- Quick Actions -->
-                    <hr class="my-3">
-                    <div class="px-3">
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
-                            <span>Быстрые действия</span>
-                        </h6>
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
-                                <i class="bi bi-plus me-1"></i>Новый проект
-                            </a>
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-plus me-1"></i>Новая задача
-                            </a>
+                            <!-- Quick Actions -->
+                            <hr class="my-3">
+                            <div class="px-3">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
+                                    <span>Быстрые действия</span>
+                                </h6>
+                                <div class="d-grid gap-2">
+                                    <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новый проект
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новая задача
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <!-- Mobile Sidebar -->
+                    <nav class="col-12 d-lg-none bg-light sidebar collapse" style="min-height: calc(100vh - 56px);">
+                        <div class="pt-3">
+                            <!-- Navigation Menu -->
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                                        <i class="bi bi-house me-2"></i>
+                                        Панель управления
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
+                                        <i class="bi bi-folder me-2"></i>
+                                        Проекты
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-kanban me-2"></i>
+                                        Задачи
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-people me-2"></i>
+                                        Команда
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-calendar me-2"></i>
+                                        Календарь
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-graph-up me-2"></i>
+                                        Отчеты
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-file-earmark-text me-2"></i>
+                                        Документы
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Quick Actions -->
+                            <hr class="my-3">
+                            <div class="px-3">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
+                                    <span>Быстрые действия</span>
+                                </h6>
+                                <div class="d-grid gap-2">
+                                    <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новый проект
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новая задача
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <!-- Main content -->
+                    <main class="col-lg-10 px-md-4" style="min-height: calc(100vh - 56px);">
+                        <!-- Page content -->
+                        <div class="pt-3">
+                            @if (session('status'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('status') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            
+                            @yield('content')
+                        </div>
+                    </main>
+                </div>
+            </div>
+        @else
+            <!-- No project selected - Show project selection page -->
+            <div class="project-selection-page">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="card project-selection-card">
+                                <div class="card-body text-center p-5">
+                                    <div class="project-selection-icon">
+                                        <i class="bi bi-folder-plus"></i>
+                                    </div>
+                                    <h3 class="card-title mb-3">Добро пожаловать в PMS!</h3>
+                                    <p class="card-text text-muted mb-4">
+                                        Для начала работы необходимо выбрать существующий проект или создать новый.
+                                    </p>
+                                    
+                                    @if(Auth::user()->projects()->count() > 0)
+                                        <div class="mb-3">
+                                            <label for="project-selector-page" class="form-label">Выберите проект:</label>
+                                            <select id="project-selector-page" class="form-select mb-3">
+                                                <option value="">Выберите проект из списка</option>
+                                                @foreach(Auth::user()->projects()->orderBy('name')->get() as $project)
+                                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+                                    
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ route('projects.create') }}" class="btn btn-primary btn-lg">
+                                            <i class="bi bi-plus-circle me-2"></i>Создать новый проект
+                                        </a>
+                                        @if(Auth::user()->projects()->count() > 0)
+                                            <a href="{{ route('projects.index') }}" class="btn btn-outline-primary">
+                                                <i class="bi bi-folder me-2"></i>Управление проектами
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </nav>
-
-            <!-- Mobile Sidebar -->
-            <nav class="col-12 d-lg-none bg-light sidebar collapse" style="min-height: calc(100vh - 56px);">
-                <div class="pt-3">
-                    <!-- Navigation Menu -->
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                                <i class="bi bi-house me-2"></i>
-                                Панель управления
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
-                                <i class="bi bi-folder me-2"></i>
-                                Проекты
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-kanban me-2"></i>
-                                Задачи
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-people me-2"></i>
-                                Команда
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-calendar me-2"></i>
-                                Календарь
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-graph-up me-2"></i>
-                                Отчеты
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-file-earmark-text me-2"></i>
-                                Документы
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Quick Actions -->
-                    <hr class="my-3">
-                    <div class="px-3">
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
-                            <span>Быстрые действия</span>
-                        </h6>
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
-                                <i class="bi bi-plus me-1"></i>Новый проект
-                            </a>
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-plus me-1"></i>Новая задача
-                            </a>
-                        </div>
+            </div>
+        @endif
+    @else
+        <!-- Guest user - Show main content without sidebar -->
+        <main class="col-12 px-md-4" style="min-height: calc(100vh - 56px);">
+            <!-- Page content -->
+            <div class="pt-3">
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </div>
-            </nav>
-            @endauth
-
-            <!-- Main content -->
-            <main class="{{ auth()->check() ? 'col-lg-10' : 'col-12' }} px-md-4" style="min-height: calc(100vh - 56px);">
-                <!-- Page content -->
-                <div class="pt-3">
-                    @if (session('status'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('status') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-                    
-                    @yield('content')
-                </div>
-            </main>
-        </div>
-    </div>
+                @endif
+                
+                @yield('content')
+            </div>
+        </main>
+    @endauth
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -333,6 +416,7 @@
     <!-- Project Selection Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Main project selector in navbar
             const projectSelector = document.getElementById('project-selector');
             if (projectSelector) {
                 projectSelector.addEventListener('change', function() {
@@ -359,6 +443,33 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
+                });
+            }
+
+            // Project selector on the selection page
+            const projectSelectorPage = document.getElementById('project-selector-page');
+            if (projectSelectorPage) {
+                projectSelectorPage.addEventListener('change', function() {
+                    const projectId = this.value;
+                    if (projectId) {
+                        fetch('{{ route("projects.set-current") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({ project_id: projectId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
                 });
             }
         });
