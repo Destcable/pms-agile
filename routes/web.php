@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,14 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Protected area
+// Protected area (requires auth)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    
+    // Project management
+    Route::resource('projects', ProjectController::class);
+    Route::post('/projects/set-current', [ProjectController::class, 'setCurrentProject'])->name('projects.set-current');
+    Route::get('/projects/get-user-projects', [ProjectController::class, 'getUserProjects'])->name('projects.get-user-projects');
 });
