@@ -26,6 +26,8 @@ class GanttController extends Controller
         
         // Generate timeline data
         $timelineData = $this->generateTimelineData($startDate, $endDate);
+        $daysCount = count($timelineData['days']);
+        $timelineWidthPx = $daysCount * 30; // 30px per day
         
         // Sample tasks data for demonstration
         $tasks = [
@@ -97,7 +99,7 @@ class GanttController extends Controller
         // Calculate task positions based on timeline
         $tasks = $this->calculateTaskPositions($tasks, $startDate, $endDate);
         
-        return view('gantt.index', compact('project', 'tasks', 'timelineData', 'startDate', 'endDate'));
+        return view('gantt.index', compact('project', 'tasks', 'timelineData', 'startDate', 'endDate', 'daysCount', 'timelineWidthPx'));
     }
     
     /**

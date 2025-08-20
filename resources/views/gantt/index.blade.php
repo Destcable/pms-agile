@@ -30,7 +30,7 @@
     .gantt-timeline {
         display: flex;
         flex-direction: column;
-        min-width: 2000px;
+        min-width: 0;
         position: relative;
     }
     .gantt-timeline-header {
@@ -68,6 +68,15 @@
         display: flex;
         flex-direction: column;
         margin-left: 0;
+        background-image: repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 29px,
+            #dee2e6 29px,
+            #dee2e6 30px
+        );
+        background-size: 30px 100%;
+        background-repeat: repeat-x;
     }
     .gantt-months {
         display: flex;
@@ -85,6 +94,9 @@
     .gantt-days {
         display: flex;
         background: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        position: relative;
+        z-index: 2;
     }
     .gantt-day {
         width: 30px;
@@ -96,23 +108,17 @@
         font-weight: 500;
         position: relative;
     }
-    .gantt-timeline::before {
+    /* Persistent bottom line under each day cell (prevents disappearance on large ranges) */
+    .gantt-day::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 300px;
-        right: 0;
-        bottom: 0;
-        background-image: repeating-linear-gradient(
-            90deg,
-            transparent 0px,
-            transparent 29px,
-            #dee2e6 29px,
-            #dee2e6 30px
-        );
-        pointer-events: none;
-        z-index: 0;
+        left: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 1px;
+        background-color: #dee2e6;
     }
+
     .gantt-chart::-webkit-scrollbar {
         height: 12px;
     }
@@ -163,6 +169,15 @@
         display: flex;
         align-items: center;
         z-index: 1;
+        background-image: repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 29px,
+            #dee2e6 29px,
+            #dee2e6 30px
+        );
+        background-size: 30px 100%;
+        background-repeat: repeat-x;
     }
     .gantt-task-bar {
         height: 24px;
@@ -341,7 +356,7 @@
                                 <div>Задача</div>
                                 <small class="text-muted">Прогресс</small>
                             </div>
-                            <div class="gantt-dates-container">
+                            <div class="gantt-dates-container" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px;">
                                 <!-- Months Row -->
                                 <div class="gantt-months" id="ganttMonths">
                                     @foreach($timelineData['months'] as $month)
@@ -365,7 +380,7 @@
                                 <div>{{ $task['name'] }}</div>
                                 <small class="text-muted">{{ $task['progress'] }}% завершено</small>
                             </div>
-                            <div class="gantt-task-timeline">
+                            <div class="gantt-task-timeline" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px;">
                                 <div class="gantt-task-bar" style="
                                     background-color: {{ $task['color'] }};
                                     width: {{ $task['width'] }}px;
@@ -624,6 +639,8 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU');
 }
+
+
 
 function showToast(message) {
     // Create a simple toast notification
