@@ -25,13 +25,16 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.at
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected area (requires auth)
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
     
-    // Project management
-    Route::resource('projects', ProjectController::class);
-    Route::post('/projects/set-current', [ProjectController::class, 'setCurrentProject'])->name('projects.set-current');
-    Route::get('/projects/get-user-projects', [ProjectController::class, 'getUserProjects'])->name('projects.get-user-projects');
+    // Project settings route
+    Route::get('/project/settings', [App\Http\Controllers\ProjectController::class, 'settings'])->name('project.settings');
+    
+    // Projects resource routes
+    Route::resource('projects', App\Http\Controllers\ProjectController::class);
+    Route::post('/projects/set-current', [App\Http\Controllers\ProjectController::class, 'setCurrentProject'])->name('projects.set-current');
+    Route::get('/projects/get-user-projects', [App\Http\Controllers\ProjectController::class, 'getUserProjects'])->name('projects.get-user-projects');
 });

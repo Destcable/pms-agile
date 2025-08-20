@@ -211,9 +211,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
-                                        <i class="bi bi-folder me-2"></i>
-                                        Проекты
+                                    <a class="nav-link" href="{{ route('project.settings') }}">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Настройки проекта
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -257,6 +257,9 @@
                                 <div class="d-grid gap-2">
                                     <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
                                         <i class="bi bi-plus me-1"></i>Новый проект
+                                    </a>
+                                    <a href="{{ route('projects.index') }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-folder me-1"></i>Управление проектами
                                     </a>
                                     <a href="#" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-plus me-1"></i>Новая задача
@@ -278,9 +281,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
-                                        <i class="bi bi-folder me-2"></i>
-                                        Проекты
+                                    <a class="nav-link" href="{{ route('project.settings') }}">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Настройки проекта
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -324,6 +327,9 @@
                                 <div class="d-grid gap-2">
                                     <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
                                         <i class="bi bi-plus me-1"></i>Новый проект
+                                    </a>
+                                    <a href="{{ route('projects.index') }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-folder me-1"></i>Управление проектами
                                     </a>
                                     <a href="#" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-plus me-1"></i>Новая задача

@@ -16,8 +16,8 @@ class ProjectMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Skip middleware for project management routes and auth routes
-        if ($request->routeIs('projects.*') || $request->routeIs('login') || $request->routeIs('register') || $request->routeIs('logout')) {
+        // Skip middleware for project management routes, auth routes, and project settings
+        if ($request->routeIs('projects.*') || $request->routeIs('login') || $request->routeIs('register') || $request->routeIs('logout') || $request->routeIs('project.settings')) {
             return $next($request);
         }
 
@@ -39,8 +39,11 @@ class ProjectMiddleware
             // Verify the selected project belongs to the user
             $project = $user->projects()->find($currentProjectId);
             if ($project) {
-                // Share current project with all views
+                // Share current project with all views and ensure session has name
                 view()->share('currentProject', $project);
+                if (!session('current_project_name')) {
+                    session(['current_project_name' => $project->name]);
+                }
             } else {
                 session()->forget(['current_project_id', 'current_project_name']);
             }

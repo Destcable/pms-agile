@@ -14,6 +14,22 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display the project settings page.
+     */
+    public function settings()
+    {
+        $currentProjectId = session('current_project_id');
+        
+        if (!$currentProjectId) {
+            return redirect()->route('dashboard')->with('error', 'Проект не выбран.');
+        }
+        
+        $project = Auth::user()->projects()->findOrFail($currentProjectId);
+        
+        return view('projects.settings', compact('project'));
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -96,7 +112,13 @@ class ProjectController extends Controller
         $this->authorize('delete', $project);
         
         $project->delete();
-        return redirect()->route('projects.index')->with('status', 'Проект удален успешно!');
+        
+        // Clear current project from session if it was the deleted one
+        if (session('current_project_id') == $project->id) {
+            session()->forget(['current_project_id', 'current_project_name']);
+        }
+        
+        return redirect()->route('dashboard')->with('status', 'Проект "' . $project->name . '" успешно удален!');
     }
 
     /**
