@@ -118,7 +118,7 @@
 
             @auth
             <!-- Mobile Toggle Button - Only show when project is selected or creating a project -->
-            @if(isset($currentProject) && $currentProject || request()->routeIs('projects.create'))
+            @if(session('current_project_id') || request()->routeIs('projects.create'))
             <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target=".sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -194,12 +194,12 @@
     </nav>
 
     @auth
-        @if(isset($currentProject) && $currentProject || request()->routeIs('projects.create'))
+        @if(session('current_project_id') || request()->routeIs('projects.create'))
             <!-- Project is selected OR user is creating a project - Show sidebar and main content -->
             <div class="container-fluid">
                 <div class="row">
                     <!-- Sidebar - Only show when project is actually selected -->
-                    @if(isset($currentProject) && $currentProject)
+                    @if(session('current_project_id'))
                     <nav class="col-lg-2 d-none d-lg-block bg-light sidebar" style="min-height: calc(100vh - 56px);">
                         <div class="position-sticky pt-3">
                             <!-- Navigation Menu -->
@@ -335,7 +335,7 @@
                     @endif
 
                     <!-- Main content -->
-                    <main class="{{ isset($currentProject) && $currentProject ? 'col-lg-10' : 'col-12' }} px-md-4" style="min-height: calc(100vh - 56px);">
+                    <main class="{{ session('current_project_id') ? 'col-lg-10' : 'col-12' }} px-md-4" style="min-height: calc(100vh - 56px);">
                         <!-- Page content -->
                         <div class="pt-3">
                             @if (session('status'))
@@ -366,27 +366,10 @@
                                         Для начала работы необходимо выбрать существующий проект или создать новый.
                                     </p>
                                     
-                                    @if(Auth::user()->projects()->count() > 0)
-                                        <div class="mb-3">
-                                            <label for="project-selector-page" class="form-label">Выберите проект:</label>
-                                            <select id="project-selector-page" class="form-select mb-3">
-                                                <option value="">Выберите проект из списка</option>
-                                                @foreach(Auth::user()->projects()->orderBy('name')->get() as $project)
-                                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                    
                                     <div class="d-grid gap-2">
                                         <a href="{{ route('projects.create') }}" class="btn btn-primary btn-lg">
                                             <i class="bi bi-plus-circle me-2"></i>Создать новый проект
                                         </a>
-                                        @if(Auth::user()->projects()->count() > 0)
-                                            <a href="{{ route('projects.index') }}" class="btn btn-outline-primary">
-                                                <i class="bi bi-folder me-2"></i>Управление проектами
-                                            </a>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -445,33 +428,6 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
-                });
-            }
-
-            // Project selector on the selection page
-            const projectSelectorPage = document.getElementById('project-selector-page');
-            if (projectSelectorPage) {
-                projectSelectorPage.addEventListener('change', function() {
-                    const projectId = this.value;
-                    if (projectId) {
-                        fetch('{{ route("projects.set-current") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            },
-                            body: JSON.stringify({ project_id: projectId })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.reload();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                    }
                 });
             }
         });
