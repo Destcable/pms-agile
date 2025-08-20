@@ -279,6 +279,7 @@
                                         </button>
                                     </div>
                                     
+                                    {{-- Temporarily commented out - not needed for now
                                     <div class="mb-4">
                                         <h6 class="text-warning">Архивирование проекта</h6>
                                         <p class="text-muted">
@@ -298,6 +299,7 @@
                                             <i class="bi bi-download me-2"></i>Экспортировать данные
                                         </button>
                                     </div>
+                                    --}}
                                 </div>
                             </div>
                         </div>

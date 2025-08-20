@@ -104,6 +104,14 @@
             color: #6c757d;
             margin-bottom: 1rem;
         }
+        .sidebar-settings-section {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        .sidebar-settings-section .btn {
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
     </style>
     @vite(['resources/js/app.js'])
 </head>
@@ -201,19 +209,13 @@
                     <!-- Sidebar - Only show when project is actually selected -->
                     @if(session('current_project_id'))
                     <nav class="col-lg-2 d-none d-lg-block bg-light sidebar" style="min-height: calc(100vh - 56px);">
-                        <div class="position-sticky pt-3">
+                        <div class="position-sticky pt-3 d-flex flex-column" style="height: calc(100vh - 56px);">
                             <!-- Navigation Menu -->
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                                         <i class="bi bi-house me-2"></i>
                                         Панель управления
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('project.settings') }}">
-                                        <i class="bi bi-gear me-2"></i>
-                                        Настройки проекта
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -244,6 +246,82 @@
                                     <a class="nav-link" href="#">
                                         <i class="bi bi-file-earmark-text me-2"></i>
                                         Документы
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('project.settings') ? 'active' : '' }}" href="{{ route('project.settings') }}">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Настройки
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Quick Actions -->
+                            <hr class="my-3">
+                            <div class="px-3">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
+                                    <span>Быстрые действия</span>
+                                </h6>
+                                <div class="d-grid gap-2">
+                                    <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новый проект
+                                    </a>
+                                    <!-- <a href="{{ route('projects.index') }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-folder me-1"></i>Управление проектами
+                                    </a> -->
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-plus me-1"></i>Новая задача
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <!-- Mobile Sidebar -->
+                    <nav class="col-12 d-lg-none bg-light sidebar collapse" style="min-height: calc(100vh - 56px);">
+                        <div class="pt-3 d-flex flex-column" style="height: calc(100vh - 56px);">
+                            <!-- Navigation Menu -->
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                                        <i class="bi bi-house me-2"></i>
+                                        Панель управления
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-kanban me-2"></i>
+                                        Задачи
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-people me-2"></i>
+                                        Команда
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-calendar me-2"></i>
+                                        Календарь
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-graph-up me-2"></i>
+                                        Отчеты
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-file-earmark-text me-2"></i>
+                                        Документы
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('project.settings') ? 'active' : '' }}" href="{{ route('project.settings') }}">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Настройки
                                     </a>
                                 </li>
                             </ul>
@@ -266,73 +344,13 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                    </nav>
-
-                    <!-- Mobile Sidebar -->
-                    <nav class="col-12 d-lg-none bg-light sidebar collapse" style="min-height: calc(100vh - 56px);">
-                        <div class="pt-3">
-                            <!-- Navigation Menu -->
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                                        <i class="bi bi-house me-2"></i>
-                                        Панель управления
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('project.settings') }}">
-                                        <i class="bi bi-gear me-2"></i>
-                                        Настройки проекта
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-kanban me-2"></i>
-                                        Задачи
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-people me-2"></i>
-                                        Команда
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-calendar me-2"></i>
-                                        Календарь
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-graph-up me-2"></i>
-                                        Отчеты
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-file-earmark-text me-2"></i>
-                                        Документы
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <!-- Quick Actions -->
-                            <hr class="my-3">
-                            <div class="px-3">
-                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 text-muted text-uppercase">
-                                    <span>Быстрые действия</span>
-                                </h6>
-                                <div class="d-grid gap-2">
-                                    <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus me-1"></i>Новый проект
-                                    </a>
-                                    <a href="{{ route('projects.index') }}" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-folder me-1"></i>Управление проектами
-                                    </a>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-plus me-1"></i>Новая задача
+                            
+                            <!-- Project Settings - Pushed to bottom -->
+                            <div class="mt-auto">
+                                <hr class="my-3">
+                                <div class="px-3 sidebar-settings-section">
+                                    <a href="{{ route('project.settings') }}" class="btn btn-outline-secondary btn-sm w-100">
+                                        <i class="bi bi-gear me-1"></i>Настройки проекта
                                     </a>
                                 </div>
                             </div>
