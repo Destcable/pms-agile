@@ -237,6 +237,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('gantt.index') ? 'active' : '' }}" href="{{ route('gantt.index') }}">
+                                        <i class="bi bi-bar-chart-line me-2"></i>
+                                        Диаграмма Ганта
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="#">
                                         <i class="bi bi-graph-up me-2"></i>
                                         Отчеты
@@ -304,6 +310,12 @@
                                     <a class="nav-link" href="#">
                                         <i class="bi bi-calendar me-2"></i>
                                         Календарь
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('gantt.index') ? 'active' : '' }}" href="{{ route('gantt.index') }}">
+                                        <i class="bi bi-bar-chart-line me-2"></i>
+                                        Диаграмма Ганта
                                     </a>
                                 </li>
                                 <li class="nav-item">

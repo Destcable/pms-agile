@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\GanttController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Project settings route
     Route::get('/project/settings', [App\Http\Controllers\ProjectController::class, 'settings'])->name('project.settings');
+    
+    // Gantt chart route
+    Route::get('/gantt', [GanttController::class, 'index'])->name('gantt.index');
     
     // Projects resource routes
     Route::resource('projects', App\Http\Controllers\ProjectController::class);
