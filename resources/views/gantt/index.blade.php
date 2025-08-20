@@ -144,7 +144,6 @@
     }
     .gantt-row {
         display: flex;
-        border-bottom: 1px solid #dee2e6;
         min-height: 45px;
         align-items: center;
         position: relative;
@@ -153,6 +152,11 @@
     .gantt-row:hover {
         background: #f8f9fa;
         z-index: 2;
+    }
+    /* Ensure a top border for the first row to match header separation */
+    .gantt-row:first-of-type .gantt-task-timeline::before {
+        top: 0;
+        bottom: auto;
     }
     .gantt-task-name {
         width: 300px;
@@ -179,6 +183,17 @@
         background-size: 30px 100%;
         background-repeat: repeat-x;
     }
+    /* Persistent horizontal line across the entire row */
+    .gantt-task-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background-color: #dee2e6;
+        z-index: 0;
+    }
     .gantt-task-bar {
         height: 24px;
         border-radius: 12px;
@@ -193,6 +208,7 @@
         cursor: grab;
         transition: transform 0.2s;
         min-width: 60px;
+        z-index: 2;
     }
     .gantt-task-bar:hover {
         transform: translateY(-1px);
