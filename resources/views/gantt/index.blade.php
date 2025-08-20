@@ -42,7 +42,7 @@
         z-index: 10;
     }
     .gantt-task-names {
-        width: 300px;
+        width: 340px;
         background: #fff;
         border-right: 1px solid #dee2e6;
         font-weight: 600;
@@ -52,7 +52,7 @@
         justify-content: center;
     }
     .gantt-task-names-header {
-        width: 300px;
+        width: 340px;
         background: #fff;
         border-right: 1px solid #dee2e6;
         font-weight: 600;
@@ -144,8 +144,8 @@
     }
     .gantt-row {
         display: flex;
-        min-height: 45px;
-        align-items: center;
+        min-height: 44px;
+        align-items: stretch;
         position: relative;
         z-index: 1;
     }
@@ -159,19 +159,24 @@
         bottom: auto;
     }
     .gantt-task-name {
-        width: 300px;
-        padding: 10px 15px;
+        width: 340px;
+        padding: 0 15px;
         border-right: 1px solid #dee2e6;
         font-weight: 500;
         flex-shrink: 0;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        height: 44px;
+        border-bottom: 1px solid #dee2e6; /* row separator on the left column */
     }
+    .gantt-row:first-of-type .gantt-task-name { border-top: 1px solid #dee2e6; }
     .gantt-task-timeline {
         flex: 1;
         position: relative;
-        height: 45px;
+        height: 44px;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         z-index: 1;
         background-image: repeating-linear-gradient(
             90deg,
@@ -195,7 +200,7 @@
         z-index: 0;
     }
     .gantt-task-bar {
-        height: 24px;
+        height: 28px; /* slimmer bar for better readability */
         border-radius: 12px;
         position: absolute;
         color: white;
@@ -209,9 +214,10 @@
         transition: transform 0.2s;
         min-width: 60px;
         z-index: 2;
+        top: 50%;
+        transform: translateY(-50%);
     }
     .gantt-task-bar:hover {
-        transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
     .gantt-task-bar:active {
@@ -372,7 +378,7 @@
                                 <div>Задача</div>
                                 <small class="text-muted">Прогресс</small>
                             </div>
-                            <div class="gantt-dates-container" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px;">
+                            <div class="gantt-dates-container" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px; margin-left: 0;">
                                 <!-- Months Row -->
                                 <div class="gantt-months" id="ganttMonths">
                                     @foreach($timelineData['months'] as $month)
