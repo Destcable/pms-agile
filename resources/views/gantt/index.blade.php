@@ -236,22 +236,6 @@
         top: 0;
         left: 0;
     }
-    .gantt-legend {
-        display: flex;
-        gap: 20px;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-    }
-    .gantt-legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .gantt-legend-color {
-        width: 16px;
-        height: 16px;
-        border-radius: 8px;
-    }
     .gantt-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -334,19 +318,6 @@
                 </div>
             </div>
             
-            <!-- Project Info -->
-            <div class="alert alert-info">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <div>
-                        <strong>Проект:</strong> {{ $project->name }}
-                        @if($project->description)
-                            <br><small class="text-muted">{{ $project->description }}</small>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
             <!-- Statistics -->
             <div class="gantt-stats">
                 <div class="gantt-stat-card">
@@ -425,37 +396,6 @@
                 </div>
             </div>
 
-            <!-- Legend -->
-            <div class="gantt-legend">
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #3498db;"></div>
-                    <span>Планирование</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #e74c3c;"></div>
-                    <span>Анализ</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #f39c12;"></div>
-                    <span>Проектирование</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #27ae60;"></div>
-                    <span>Разработка</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #9b59b6;"></div>
-                    <span>Frontend</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #34495e;"></div>
-                    <span>Тестирование</span>
-                </div>
-                <div class="gantt-legend-item">
-                    <div class="gantt-legend-color" style="background-color: #e67e22;"></div>
-                    <span>Деплой</span>
-                </div>
-            </div>
         </div>
     </div>
 </div>
