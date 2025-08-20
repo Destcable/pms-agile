@@ -217,6 +217,11 @@
         top: 50%;
         transform: translateY(-50%);
     }
+    .gantt-progress-label {
+        margin-left: 8px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.9);
+    }
     .gantt-task-bar:hover {
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
@@ -376,7 +381,6 @@
                         <div class="gantt-timeline-header">
                             <div class="gantt-task-names-header">
                                 <div>Задача</div>
-                                <small class="text-muted">Прогресс</small>
                             </div>
                             <div class="gantt-dates-container" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px; margin-left: 0;">
                                 <!-- Months Row -->
@@ -400,7 +404,6 @@
                         <div class="gantt-row">
                             <div class="gantt-task-name">
                                 <div>{{ $task['name'] }}</div>
-                                <small class="text-muted">{{ $task['progress'] }}% завершено</small>
                             </div>
                             <div class="gantt-task-timeline" style="min-width: {{ $timelineWidthPx }}px; width: {{ $timelineWidthPx }}px;">
                                 <div class="gantt-task-bar" style="
@@ -413,6 +416,7 @@
                                 title="{{ $task['name'] }} ({{ $task['start'] }} - {{ $task['end'] }})">
                                     <div class="gantt-progress" style="width: {{ $task['progress'] }}%;"></div>
                                     <span>{{ $task['name'] }}</span>
+                                    <span class="gantt-progress-label">{{ $task['progress'] }}%</span>
                                 </div>
                             </div>
                         </div>
