@@ -117,8 +117,8 @@
             </a>
 
             @auth
-            <!-- Mobile Toggle Button - Only show when project is selected -->
-            @if(isset($currentProject) && $currentProject)
+            <!-- Mobile Toggle Button - Only show when project is selected or creating a project -->
+            @if(isset($currentProject) && $currentProject || request()->routeIs('projects.create'))
             <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target=".sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -194,11 +194,12 @@
     </nav>
 
     @auth
-        @if(isset($currentProject) && $currentProject)
-            <!-- Project is selected - Show sidebar and main content -->
+        @if(isset($currentProject) && $currentProject || request()->routeIs('projects.create'))
+            <!-- Project is selected OR user is creating a project - Show sidebar and main content -->
             <div class="container-fluid">
                 <div class="row">
-                    <!-- Sidebar -->
+                    <!-- Sidebar - Only show when project is actually selected -->
+                    @if(isset($currentProject) && $currentProject)
                     <nav class="col-lg-2 d-none d-lg-block bg-light sidebar" style="min-height: calc(100vh - 56px);">
                         <div class="position-sticky pt-3">
                             <!-- Navigation Menu -->
@@ -331,9 +332,10 @@
                             </div>
                         </div>
                     </nav>
+                    @endif
 
                     <!-- Main content -->
-                    <main class="col-lg-10 px-md-4" style="min-height: calc(100vh - 56px);">
+                    <main class="{{ isset($currentProject) && $currentProject ? 'col-lg-10' : 'col-12' }} px-md-4" style="min-height: calc(100vh - 56px);">
                         <!-- Page content -->
                         <div class="pt-3">
                             @if (session('status'))
@@ -349,7 +351,7 @@
                 </div>
             </div>
         @else
-            <!-- No project selected - Show project selection page -->
+            <!-- No project selected - Show project selection page on other routes -->
             <div class="project-selection-page">
                 <div class="container">
                     <div class="row justify-content-center">
